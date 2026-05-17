@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Poodle Day Planner</title>
+    <meta name="theme-color" content="#28433c">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell" aria-labelledby="game-title">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Prototype level</p>
+          <h1 id="game-title">Poodle Day Planner</h1>
+        </div>
+        <button class="icon-button" id="sound-toggle" type="button" aria-label="Toggle sound" title="Toggle sound">♪</button>
+      </header>
+
+      <section class="level-panel" aria-label="Level overview">
+        <div>
+          <h2 id="level-title">Sunny Morning</h2>
+          <p id="level-copy">Place bowls, beds, toys, and family time so Mimi and Beau can finish their morning.</p>
+        </div>
+        <button class="primary-button" id="start-day" type="button">Start Day</button>
+      </section>
+
+      <section class="poodle-list" id="poodle-list" aria-label="Poodle routines"></section>
+
+      <section class="tool-tray" aria-label="Placeable home items">
+        <button class="tool is-selected" type="button" data-item="bowl">Bowl</button>
+        <button class="tool" type="button" data-item="bed">Bed</button>
+        <button class="tool" type="button" data-item="toy">Toy</button>
+        <button class="tool" type="button" data-item="family">Family</button>
+        <button class="tool" type="button" data-item="sunny">Sun</button>
+        <button class="tool" type="button" data-item="obstacle">Block</button>
+        <button class="tool" type="button" data-item="erase">Erase</button>
+      </section>
+
+      <section class="board-wrap" aria-label="Home grid">
+        <div class="board" id="board"></div>
+      </section>
+
+      <section class="feedback" id="feedback" aria-live="polite">
+        Arrange the home, then start the day.
+      </section>
+    </main>
+
+    <script type="module" src="./src/game/app.mjs"></script>
+  </body>
+</html>

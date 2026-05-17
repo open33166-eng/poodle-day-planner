@@ -1,0 +1,11 @@
+{
+  "name": "poodle-day-planner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --watch-path=src --watch-path=index.html --watch-path=styles.css scripts/dev-server.mjs",
+    "check": "node --test tests/game.test.mjs && node scripts/smoke-server.mjs",
+    "test": "node --test tests/game.test.mjs"
+  }
+}

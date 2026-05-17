@@ -1,0 +1,10 @@
+{
+  "name": "Poodle Day Planner",
+  "short_name": "Poodle Planner",
+  "description": "A calm grid strategy puzzle about poodles, home routines, and family time.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#d7ede5",
+  "theme_color": "#28433c",
+  "orientation": "portrait"
+}
