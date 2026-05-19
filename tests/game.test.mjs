@@ -5,6 +5,7 @@ import {
   applyCareAction,
   createCareProfile,
   createStarterLevel,
+  getCarePresentation,
   simulateDay,
   tileKey,
 } from '../src/game/core.mjs';
@@ -75,4 +76,26 @@ test('care actions improve matching stats and bond progress', () => {
   assert.equal(played.stats.energy, 58);
   assert.equal(played.bond.current, 370);
   assert.equal(played.todayGoal.completed, 2);
+});
+
+test('care actions expose animation and poodle sound cues for the UI', () => {
+  assert.deepEqual(getCarePresentation('feed'), {
+    animation: 'is-eating',
+    sound: 'happy-bark',
+  });
+
+  assert.deepEqual(getCarePresentation('groom'), {
+    animation: 'is-grooming',
+    sound: 'content-whine',
+  });
+
+  assert.deepEqual(getCarePresentation('play'), {
+    animation: 'is-playing',
+    sound: 'excited-bark',
+  });
+
+  assert.deepEqual(getCarePresentation('rest'), {
+    animation: 'is-resting',
+    sound: 'sleepy-sigh',
+  });
 });

@@ -787,3 +787,390 @@ p {
     width: 100%;
   }
 }
+
+/* Polished mobile pet-care pass inspired by the reference screen. */
+body {
+  background:
+    radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.96), transparent 28%),
+    radial-gradient(circle at 82% 16%, rgba(255, 255, 255, 0.72), transparent 24%),
+    linear-gradient(180deg, #ffd4e5 0%, #fff3f8 53%, #ffddec 100%);
+}
+
+.pet-header {
+  padding-top: 2px;
+}
+
+.avatar {
+  border-color: rgba(255, 255, 255, 0.96);
+  background:
+    radial-gradient(circle at 40% 24%, rgba(255, 255, 255, 0.75), transparent 28%),
+    #ffbfd7;
+  box-shadow: 0 12px 28px rgba(214, 82, 139, 0.23);
+}
+
+.wallet-chip,
+.stats-panel,
+.bond-card,
+.mini-card,
+.planner-panel,
+.side-card {
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.93);
+  box-shadow: 0 18px 45px rgba(169, 80, 118, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.stats-panel,
+.bond-card,
+.mini-card,
+.planner-panel,
+.bottom-nav {
+  backdrop-filter: blur(16px);
+}
+
+.stat-card.green div:first-child span::before {
+  content: "+";
+}
+
+.stat-card.yellow div:first-child span::before {
+  content: ":)";
+}
+
+.stat-card.orange div:first-child span::before {
+  content: "b";
+}
+
+.stat-card.blue div:first-child span::before {
+  content: "z";
+}
+
+.stat-track span,
+.progress-track span {
+  transition: width 420ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.room-scene {
+  background:
+    radial-gradient(circle at 76% 28%, rgba(255, 255, 255, 0.72), transparent 18%),
+    radial-gradient(circle at 43% 30%, rgba(255, 255, 255, 0.48), transparent 20%),
+    linear-gradient(90deg, rgba(255, 201, 219, 0.74), transparent 28%, transparent 68%, rgba(255, 201, 219, 0.68)),
+    linear-gradient(180deg, #ffd8e7 0 57%, #edbd9a 57% 100%);
+}
+
+.room-scene::before {
+  background:
+    repeating-radial-gradient(ellipse at center, rgba(255, 255, 255, 0.24) 0 7px, rgba(255, 255, 255, 0) 8px 18px),
+    #ffbfd2;
+}
+
+.room-scene::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 168px;
+  background:
+    linear-gradient(13deg, transparent 0 24%, rgba(137, 82, 48, 0.16) 24.3% 24.8%, transparent 25.1% 48%, rgba(137, 82, 48, 0.12) 48.3% 48.8%, transparent 49.1%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent);
+  pointer-events: none;
+}
+
+.window {
+  background:
+    radial-gradient(circle at 70% 30%, #fff1a0 0 12px, transparent 13px),
+    linear-gradient(#92d9f4, #fff8d7);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.42), 0 12px 24px rgba(188, 88, 125, 0.1);
+}
+
+.sofa {
+  background:
+    radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.35), transparent 22%),
+    #f6a9bf;
+  box-shadow: inset 0 -20px 0 rgba(187, 76, 113, 0.1), 0 14px 28px rgba(166, 80, 108, 0.13);
+}
+
+.dog-house {
+  box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.18), 0 16px 24px rgba(150, 80, 97, 0.16);
+}
+
+.cloudy-stage {
+  z-index: 2;
+  animation: breathe 1.25s ease-in-out infinite alternate;
+}
+
+.cloudy-stage svg {
+  overflow: visible;
+}
+
+.cloudy-stage .tail {
+  transform-box: fill-box;
+  transform-origin: 0 70%;
+  animation: tail-wag 520ms ease-in-out infinite alternate;
+}
+
+.cloudy-stage .ear {
+  transform-box: fill-box;
+  transform-origin: 50% 8%;
+  animation: ear-sway 1.6s ease-in-out infinite alternate;
+}
+
+.cloudy-stage .bow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bow-bob 1.4s ease-in-out infinite alternate;
+}
+
+.cloudy-stage .eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 4.4s infinite;
+}
+
+.cloudy-stage .tongue {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: tongue-wiggle 900ms ease-in-out infinite alternate;
+}
+
+.cloudy-stage.is-eating {
+  animation: eat-nod 700ms ease-in-out 2;
+}
+
+.cloudy-stage.is-grooming {
+  animation: grooming-shiver 760ms ease-in-out 2;
+}
+
+.cloudy-stage.is-playing {
+  animation: happy-bounce 620ms ease-in-out 2;
+}
+
+.cloudy-stage.is-resting {
+  animation: rest-curl 1.1s ease-in-out 1;
+}
+
+.sparkle {
+  animation: sparkle 1.7s ease-in-out infinite;
+}
+
+.sparkle-two {
+  animation-delay: 520ms;
+}
+
+.sparkle-three {
+  animation-delay: 880ms;
+}
+
+.mood-bubble {
+  position: absolute;
+  left: calc(50% + 54px);
+  top: 198px;
+  z-index: 4;
+  min-width: 72px;
+  padding: 9px 13px;
+  border: 3px solid rgba(255, 255, 255, 0.96);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #d94986;
+  font-size: 0.82rem;
+  font-weight: 950;
+  opacity: 0;
+  transform: translateY(10px) scale(0.92);
+  box-shadow: 0 12px 24px rgba(173, 73, 116, 0.2);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.mood-bubble::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  bottom: -9px;
+  border: 9px solid transparent;
+  border-top-color: rgba(255, 255, 255, 0.94);
+  border-bottom: 0;
+}
+
+.mood-bubble.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.tasks-card .side-icon::before {
+  content: "*";
+}
+
+.gift-card .side-icon::before {
+  content: "+";
+}
+
+.bond-icon::before {
+  content: "<3";
+  font-size: 1.25rem;
+}
+
+.bond-title button::before {
+  content: ">";
+}
+
+.card-toy::before {
+  content: "o";
+}
+
+.action-row button,
+.small-primary,
+.sound-fab {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.action-row button:active,
+.small-primary:active,
+.sound-fab:active {
+  transform: translateY(2px) scale(0.98);
+}
+
+.bottom-nav button::before {
+  display: block;
+  margin: 0 auto 3px;
+  color: currentColor;
+  font-size: 1.2rem;
+}
+
+.bottom-nav button:nth-child(1)::before {
+  content: "^";
+}
+
+.bottom-nav button:nth-child(2)::before {
+  content: "b";
+}
+
+.bottom-nav button:nth-child(3)::before {
+  content: "/";
+}
+
+.bottom-nav button:nth-child(4)::before {
+  content: "o";
+}
+
+.bottom-nav button:nth-child(5)::before {
+  content: "[]";
+  font-size: 0.9rem;
+}
+
+@keyframes tail-wag {
+  from {
+    transform: rotate(-9deg);
+  }
+
+  to {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes ear-sway {
+  from {
+    transform: rotate(-2deg);
+  }
+
+  to {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes bow-bob {
+  from {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  to {
+    transform: translateY(-2px) rotate(2deg);
+  }
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  95% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes tongue-wiggle {
+  from {
+    transform: scaleY(0.92);
+  }
+
+  to {
+    transform: scaleY(1.08);
+  }
+}
+
+@keyframes eat-nod {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(0);
+  }
+
+  45% {
+    transform: translateX(-50%) translateY(16px) rotate(-3deg);
+  }
+}
+
+@keyframes grooming-shiver {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(0);
+  }
+
+  20% {
+    transform: translateX(-52%) rotate(-2deg);
+  }
+
+  40% {
+    transform: translateX(-48%) rotate(2deg);
+  }
+
+  60% {
+    transform: translateX(-52%) rotate(-1deg);
+  }
+}
+
+@keyframes rest-curl {
+  0% {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  70% {
+    transform: translateX(-50%) translateY(18px) scale(0.9);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: rotate(45deg) scale(0.72);
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

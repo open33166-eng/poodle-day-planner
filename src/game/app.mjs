@@ -2,6 +2,7 @@ import {
   applyCareAction,
   createCareProfile,
   createStarterLevel,
+  getCarePresentation,
   simulateDay,
   tileKey,
 } from './core.mjs';
@@ -27,6 +28,7 @@ const goalCount = document.querySelector('#goal-count');
 const goalProgress = document.querySelector('#goal-progress');
 const goalLabel = document.querySelector('#goal-label');
 const routineFeedback = document.querySelector('#routine-feedback');
+const moodBubble = document.querySelector('#mood-bubble');
 const startButton = document.querySelector('#start-day');
 const soundToggle = document.querySelector('#sound-toggle');
 
@@ -37,13 +39,22 @@ renderCareProfile();
 document.querySelectorAll('[data-care-action]').forEach((button) => {
   button.addEventListener('click', () => {
     startAmbience();
-    profile = applyCareAction(profile, button.dataset.careAction);
-    cloudyStage.classList.remove('is-happy');
+    const action = button.dataset.careAction;
+    const presentation = getCarePresentation(action);
+    profile = applyCareAction(profile, action);
+    cloudyStage.classList.remove('is-eating', 'is-grooming', 'is-playing', 'is-resting', 'is-curious');
     void cloudyStage.offsetWidth;
-    cloudyStage.classList.add('is-happy');
+    cloudyStage.classList.add(presentation.animation);
+    moodBubble.textContent = bubbleCopy(action);
+    moodBubble.classList.add('is-visible');
     routineFeedback.textContent = profile.message;
     renderCareProfile();
-    playCue(button.dataset.careAction === 'play' ? 'success' : 'place');
+    playCue(presentation.sound);
+
+    window.setTimeout(() => {
+      cloudyStage.classList.remove(presentation.animation);
+      moodBubble.classList.remove('is-visible');
+    }, 1150);
   });
 });
 
@@ -98,4 +109,15 @@ function renderCareProfile() {
       </article>
     `;
   }).join('');
+}
+
+function bubbleCopy(action) {
+  const copy = {
+    feed: 'Yum!',
+    groom: 'So fluffy!',
+    play: 'Again!',
+    rest: 'Sleepy...',
+  };
+
+  return copy[action] ?? 'Hi!';
 }

@@ -142,6 +142,32 @@ export function applyCareAction(profile, action) {
   };
 }
 
+export function getCarePresentation(action) {
+  const presentations = {
+    feed: {
+      animation: 'is-eating',
+      sound: 'happy-bark',
+    },
+    groom: {
+      animation: 'is-grooming',
+      sound: 'content-whine',
+    },
+    play: {
+      animation: 'is-playing',
+      sound: 'excited-bark',
+    },
+    rest: {
+      animation: 'is-resting',
+      sound: 'sleepy-sigh',
+    },
+  };
+
+  return presentations[action] ?? {
+    animation: 'is-curious',
+    sound: 'soft-yip',
+  };
+}
+
 function clampStat(value) {
   return Math.max(0, Math.min(100, value));
 }
