@@ -4,7 +4,7 @@
   "description": "A calm grid strategy puzzle about poodles, home routines, and family time.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#d7ede5",
-  "theme_color": "#28433c",
+  "background_color": "#ffdceb",
+  "theme_color": "#f477ad",
   "orientation": "portrait"
 }

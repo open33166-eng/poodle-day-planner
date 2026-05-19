@@ -1,168 +1,101 @@
-import { createStarterLevel, simulateDay, tileKey } from './core.mjs';
+import {
+  applyCareAction,
+  createCareProfile,
+  createStarterLevel,
+  simulateDay,
+  tileKey,
+} from './core.mjs';
 import { playCue, startAmbience, toggleAudio } from './audio.mjs';
-import { itemLabels, poodleSvg } from './poodle-art.mjs';
+import { poodleSvg } from './poodle-art.mjs';
 
 const level = createStarterLevel();
-const layout = new Map([
+const routineLayout = new Map([
   [tileKey(1, 1), 'bowl'],
+  [tileKey(2, 1), 'toy'],
   [tileKey(3, 1), 'bed'],
-  [tileKey(1, 3), 'toy'],
-  [tileKey(3, 3), 'family'],
-  [tileKey(2, 2), 'sunny'],
+  [tileKey(2, 3), 'family'],
 ]);
 
-let selectedItem = 'bowl';
-let animating = false;
+let profile = createCareProfile();
 
-const board = document.querySelector('#board');
-const poodleList = document.querySelector('#poodle-list');
-const feedback = document.querySelector('#feedback');
+const cloudyStage = document.querySelector('#cloudy-stage');
+const petAvatar = document.querySelector('#pet-avatar');
+const statsPanel = document.querySelector('#stats-panel');
+const bondProgress = document.querySelector('#bond-progress');
+const bondCopy = document.querySelector('#bond-copy');
+const goalCount = document.querySelector('#goal-count');
+const goalProgress = document.querySelector('#goal-progress');
+const goalLabel = document.querySelector('#goal-label');
+const routineFeedback = document.querySelector('#routine-feedback');
 const startButton = document.querySelector('#start-day');
 const soundToggle = document.querySelector('#sound-toggle');
 
-renderPoodleCards();
-renderBoard();
+petAvatar.innerHTML = poodleSvg('cloudy');
+cloudyStage.innerHTML = poodleSvg('cloudy');
+renderCareProfile();
 
-document.querySelectorAll('.tool').forEach((button) => {
+document.querySelectorAll('[data-care-action]').forEach((button) => {
   button.addEventListener('click', () => {
-    selectedItem = button.dataset.item;
-    document.querySelectorAll('.tool').forEach((tool) => tool.classList.toggle('is-selected', tool === button));
+    startAmbience();
+    profile = applyCareAction(profile, button.dataset.careAction);
+    cloudyStage.classList.remove('is-happy');
+    void cloudyStage.offsetWidth;
+    cloudyStage.classList.add('is-happy');
+    routineFeedback.textContent = profile.message;
+    renderCareProfile();
+    playCue(button.dataset.careAction === 'play' ? 'success' : 'place');
   });
 });
 
 soundToggle.addEventListener('click', () => {
   const isEnabled = toggleAudio();
   soundToggle.classList.toggle('is-muted', !isEnabled);
-  soundToggle.textContent = isEnabled ? '♪' : '×';
+  soundToggle.textContent = isEnabled ? 'Sound' : 'Muted';
   soundToggle.setAttribute('aria-label', isEnabled ? 'Turn sound off' : 'Turn sound on');
 });
 
-startButton.addEventListener('click', async () => {
-  if (animating) {
-    return;
-  }
-
+startButton.addEventListener('click', () => {
   startAmbience();
-  const result = simulateDay(level, layout);
-  await animateResult(result);
-  updateChecklist(result);
+  const result = simulateDay(level, routineLayout);
 
   if (result.success) {
-    feedback.textContent = 'A cozy morning. Every poodle completed their routine.';
-    feedback.className = 'feedback is-success';
+    routineFeedback.textContent = 'Cloudy and Beau can finish the cozy morning routine.';
     playCue('success');
   } else {
     const reason = result.poodles.find((poodle) => poodle.failureReason)?.failureReason;
-    feedback.textContent = reason ?? 'Something in the home needs a gentler arrangement.';
-    feedback.className = 'feedback is-fail';
+    routineFeedback.textContent = reason ?? 'The routine needs a softer arrangement.';
     playCue('fail');
   }
 });
 
-function renderPoodleCards() {
-  poodleList.innerHTML = level.poodles.map((poodle) => `
-    <article class="poodle-card" data-poodle-card="${poodle.id}">
-      <div class="portrait">${poodleSvg(poodle.id)}</div>
-      <div>
-        <h3>${poodle.name}</h3>
-        <p>${poodle.variant} · ${poodle.coat}</p>
-        <p>${poodle.personality}</p>
-        <div class="habits">
-          ${poodle.habits.map((habit) => `<span data-habit="${poodle.id}:${habit}">${habit}</span>`).join('')}
+function renderCareProfile() {
+  document.querySelector('#coins').textContent = profile.currency.coins.toLocaleString();
+  document.querySelector('#gems').textContent = profile.currency.gems.toLocaleString();
+  document.querySelector('#bond-level').textContent = profile.bond.level;
+  goalLabel.textContent = profile.todayGoal.label;
+  goalCount.textContent = `${profile.todayGoal.completed}/${profile.todayGoal.target}`;
+  bondCopy.textContent = `${profile.bond.current}/${profile.bond.target}`;
+  bondProgress.style.width = `${(profile.bond.current / profile.bond.target) * 100}%`;
+  goalProgress.style.width = `${(profile.todayGoal.completed / profile.todayGoal.target) * 100}%`;
+
+  const stats = [
+    { key: 'health', label: 'Health', icon: 'Heart', tone: 'green' },
+    { key: 'happiness', label: 'Happiness', icon: 'Smile', tone: 'yellow' },
+    { key: 'hunger', label: 'Hunger', icon: 'Bowl', tone: 'orange' },
+    { key: 'energy', label: 'Energy', icon: 'Bolt', tone: 'blue' },
+  ];
+
+  statsPanel.innerHTML = stats.map((stat) => {
+    const value = profile.stats[stat.key];
+    return `
+      <article class="stat-card ${stat.tone}">
+        <div>
+          <span>${stat.icon}</span>
+          <strong>${stat.label}</strong>
         </div>
-      </div>
-    </article>
-  `).join('');
-}
-
-function renderBoard(poodlePositions = level.startingPositions) {
-  board.style.setProperty('--board-size', level.width);
-  board.innerHTML = '';
-
-  for (let y = 0; y < level.height; y += 1) {
-    for (let x = 0; x < level.width; x += 1) {
-      const key = tileKey(x, y);
-      const cell = document.createElement('button');
-      const item = layout.get(key);
-      cell.className = `cell ${item ? `has-${item}` : ''}`;
-      cell.type = 'button';
-      cell.dataset.key = key;
-      cell.setAttribute('aria-label', `Tile ${x + 1}, ${y + 1}${item ? `, ${item}` : ''}`);
-      cell.innerHTML = item ? `<span class="item-mark">${itemLabels[item]}</span>` : '';
-      cell.addEventListener('click', () => placeItem(key));
-
-      for (const [poodleId, position] of poodlePositions.entries()) {
-        if (position === key) {
-          const marker = document.createElement('div');
-          marker.className = `poodle-token ${poodleId}`;
-          marker.innerHTML = poodleSvg(poodleId);
-          cell.append(marker);
-        }
-      }
-
-      board.append(cell);
-    }
-  }
-}
-
-function placeItem(key) {
-  if (animating) {
-    return;
-  }
-
-  if (selectedItem === 'erase') {
-    layout.delete(key);
-  } else {
-    layout.set(key, selectedItem);
-  }
-
-  feedback.textContent = `${selectedItem === 'erase' ? 'Cleared' : 'Placed'} tile.`;
-  feedback.className = 'feedback';
-  playCue('place');
-  renderBoard();
-}
-
-async function animateResult(result) {
-  animating = true;
-  startButton.disabled = true;
-  feedback.textContent = 'The poodles are starting their day...';
-  feedback.className = 'feedback';
-
-  const positions = new Map(level.startingPositions);
-  const maxSteps = Math.max(...result.poodles.map((poodle) => poodle.path.length));
-
-  for (let step = 0; step < maxSteps; step += 1) {
-    for (const poodle of result.poodles) {
-      const position = poodle.path[Math.min(step, poodle.path.length - 1)];
-      positions.set(poodle.id, position);
-    }
-
-    renderBoard(positions);
-    playCue('step');
-    await wait(260);
-  }
-
-  animating = false;
-  startButton.disabled = false;
-}
-
-function updateChecklist(result) {
-  document.querySelectorAll('[data-habit]').forEach((habit) => {
-    habit.classList.remove('is-complete');
-  });
-
-  for (const poodle of result.poodles) {
-    for (const habit of poodle.completedHabits) {
-      document.querySelector(`[data-habit="${poodle.id}:${habit}"]`)?.classList.add('is-complete');
-    }
-
-    const card = document.querySelector(`[data-poodle-card="${poodle.id}"]`);
-    card?.classList.toggle('is-complete', poodle.completedHabits.length === poodle.habits.length);
-  }
-}
-
-function wait(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+        <div class="stat-track"><span style="width: ${value}%"></span></div>
+        <p>${value}/100</p>
+      </article>
+    `;
+  }).join('');
 }

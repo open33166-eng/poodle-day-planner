@@ -58,6 +58,94 @@ export function createStarterLevel() {
   };
 }
 
+export function createCareProfile() {
+  return {
+    pet: {
+      name: 'Cloudy',
+      level: 12,
+      type: 'Poodle',
+      coat: 'White teddy cut',
+    },
+    currency: {
+      coins: 8450,
+      gems: 320,
+    },
+    stats: {
+      health: 92,
+      happiness: 78,
+      hunger: 45,
+      energy: 66,
+    },
+    bond: {
+      level: 12,
+      current: 320,
+      target: 500,
+    },
+    todayGoal: {
+      label: 'Play together 3 times',
+      completed: 0,
+      target: 3,
+    },
+  };
+}
+
+export function applyCareAction(profile, action) {
+  const effects = {
+    feed: {
+      stats: { hunger: 12, happiness: 2 },
+      bond: 10,
+      goal: 1,
+      message: 'Cloudy enjoyed a careful meal.',
+    },
+    groom: {
+      stats: { health: 4, happiness: 6 },
+      bond: 16,
+      goal: 0,
+      message: 'Cloudy looks fluffy and proud.',
+    },
+    play: {
+      stats: { happiness: 12, energy: -8 },
+      bond: 40,
+      goal: 1,
+      message: 'Cloudy loved play time with the family.',
+    },
+    rest: {
+      stats: { energy: 14, health: 2 },
+      bond: 8,
+      goal: 0,
+      message: 'Cloudy curled up for a soft little rest.',
+    },
+  };
+
+  const effect = effects[action];
+  if (!effect) {
+    return { ...profile, message: 'Cloudy is waiting for a cozy action.' };
+  }
+
+  const stats = { ...profile.stats };
+  for (const [stat, change] of Object.entries(effect.stats)) {
+    stats[stat] = clampStat(stats[stat] + change);
+  }
+
+  return {
+    ...profile,
+    stats,
+    bond: {
+      ...profile.bond,
+      current: Math.min(profile.bond.target, profile.bond.current + effect.bond),
+    },
+    todayGoal: {
+      ...profile.todayGoal,
+      completed: Math.min(profile.todayGoal.target, profile.todayGoal.completed + effect.goal),
+    },
+    message: effect.message,
+  };
+}
+
+function clampStat(value) {
+  return Math.max(0, Math.min(100, value));
+}
+
 export function simulateDay(level, layout) {
   const poodles = level.poodles.map((poodle) => simulatePoodle(level, layout, poodle));
   return {

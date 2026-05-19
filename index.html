@@ -4,47 +4,112 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Poodle Day Planner</title>
-    <meta name="theme-color" content="#28433c">
+    <meta name="theme-color" content="#f477ad">
     <link rel="manifest" href="./site.webmanifest">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <main class="app-shell" aria-labelledby="game-title">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Prototype level</p>
-          <h1 id="game-title">Poodle Day Planner</h1>
+    <main class="pet-app" aria-labelledby="pet-name">
+      <header class="pet-header">
+        <div class="pet-identity">
+          <div class="avatar" id="pet-avatar" aria-hidden="true"></div>
+          <div>
+            <h1 id="pet-name">Cloudy</h1>
+            <p><span class="paw">Paw</span> Poodle</p>
+          </div>
+          <span class="level-pill">12</span>
         </div>
-        <button class="icon-button" id="sound-toggle" type="button" aria-label="Toggle sound" title="Toggle sound">♪</button>
+
+        <div class="wallet" aria-label="Wallet">
+          <span class="wallet-chip"><span class="coin">Coin</span><strong id="coins">8,450</strong><button type="button" aria-label="Add coins">+</button></span>
+          <span class="wallet-chip"><span class="gem">Gem</span><strong id="gems">320</strong><button type="button" aria-label="Add gems">+</button></span>
+        </div>
       </header>
 
-      <section class="level-panel" aria-label="Level overview">
-        <div>
-          <h2 id="level-title">Sunny Morning</h2>
-          <p id="level-copy">Place bowls, beds, toys, and family time so Mimi and Beau can finish their morning.</p>
+      <section class="stats-panel" aria-label="Cloudy's care stats" id="stats-panel"></section>
+
+      <section class="room-scene" aria-label="Cloudy's cozy room">
+        <button class="side-card tasks-card" type="button">
+          <span class="badge">3</span>
+          <span class="side-icon">Medal</span>
+          <strong>Tasks</strong>
+        </button>
+        <button class="side-card gift-card" type="button">
+          <span class="dot"></span>
+          <span class="side-icon">Gift</span>
+          <strong>Daily Gift</strong>
+        </button>
+
+        <div class="window">
+          <span></span>
+          <span></span>
         </div>
-        <button class="primary-button" id="start-day" type="button">Start Day</button>
+        <div class="sofa"></div>
+        <div class="plant"></div>
+        <div class="toy-basket"></div>
+        <div class="dog-house">Cloudy</div>
+        <div class="food-bowl">Cloudy</div>
+        <div class="sparkle sparkle-one"></div>
+        <div class="sparkle sparkle-two"></div>
+        <div class="sparkle sparkle-three"></div>
+        <div class="cloudy-stage" id="cloudy-stage"></div>
       </section>
 
-      <section class="poodle-list" id="poodle-list" aria-label="Poodle routines"></section>
-
-      <section class="tool-tray" aria-label="Placeable home items">
-        <button class="tool is-selected" type="button" data-item="bowl">Bowl</button>
-        <button class="tool" type="button" data-item="bed">Bed</button>
-        <button class="tool" type="button" data-item="toy">Toy</button>
-        <button class="tool" type="button" data-item="family">Family</button>
-        <button class="tool" type="button" data-item="sunny">Sun</button>
-        <button class="tool" type="button" data-item="obstacle">Block</button>
-        <button class="tool" type="button" data-item="erase">Erase</button>
+      <section class="quick-actions" aria-label="Quick actions">
+        <span>Quick Actions</span>
+        <div class="action-row">
+          <button type="button" data-care-action="feed">Feed</button>
+          <button type="button" data-care-action="groom">Groom</button>
+          <button type="button" data-care-action="play">Play</button>
+          <button type="button" data-care-action="rest">Rest</button>
+        </div>
       </section>
 
-      <section class="board-wrap" aria-label="Home grid">
-        <div class="board" id="board"></div>
+      <section class="bond-card" aria-label="Bond level">
+        <div class="bond-icon">Heart</div>
+        <div>
+          <div class="bond-title">
+            <h2>Bond Level <span>Lv. <span id="bond-level">12</span></span></h2>
+            <button type="button" aria-label="Open bond details">Next</button>
+          </div>
+          <div class="progress-track"><span id="bond-progress"></span></div>
+          <p id="bond-copy">320/500</p>
+        </div>
       </section>
 
-      <section class="feedback" id="feedback" aria-live="polite">
-        Arrange the home, then start the day.
+      <section class="info-grid">
+        <article class="mini-card">
+          <h2>Today's Goal</h2>
+          <p id="goal-label">Play together 3 times</p>
+          <strong id="goal-count">0/3</strong>
+          <div class="progress-track small"><span id="goal-progress"></span></div>
+          <span class="card-toy">Ball</span>
+        </article>
+
+        <article class="mini-card">
+          <h2>Care Tips</h2>
+          <p>Brush your poodle daily to keep them happy and healthy.</p>
+          <span class="brush">Brush</span>
+        </article>
       </section>
+
+      <section class="planner-panel" aria-label="Routine planner">
+        <div>
+          <h2>Routine Puzzle</h2>
+          <p id="routine-feedback">Start Cloudy's routine check to test the planner logic.</p>
+        </div>
+        <button class="small-primary" id="start-day" type="button">Check Routine</button>
+      </section>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <button class="active" type="button">Home</button>
+        <button type="button">Feed</button>
+        <button type="button">Groom</button>
+        <button type="button">Play</button>
+        <button type="button">Shop</button>
+      </nav>
+
+      <button class="sound-fab" id="sound-toggle" type="button" aria-label="Toggle sound" title="Toggle sound">Sound</button>
     </main>
 
     <script type="module" src="./src/game/app.mjs"></script>

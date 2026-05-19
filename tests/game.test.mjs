@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  applyCareAction,
+  createCareProfile,
   createStarterLevel,
   simulateDay,
   tileKey,
@@ -58,4 +60,19 @@ test('blocked paths fail with a reachable item explanation', () => {
   assert.equal(result.success, false);
   assert.deepEqual(mimi.completedHabits, []);
   assert.equal(mimi.failureReason, 'Mimi could not reach a food bowl.');
+});
+
+test('care actions improve matching stats and bond progress', () => {
+  const profile = createCareProfile();
+
+  const fed = applyCareAction(profile, 'feed');
+  assert.equal(fed.stats.hunger, 57);
+  assert.equal(fed.stats.happiness, 80);
+  assert.equal(fed.todayGoal.completed, 1);
+
+  const played = applyCareAction(fed, 'play');
+  assert.equal(played.stats.happiness, 92);
+  assert.equal(played.stats.energy, 58);
+  assert.equal(played.bond.current, 370);
+  assert.equal(played.todayGoal.completed, 2);
 });
