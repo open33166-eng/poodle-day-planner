@@ -9,6 +9,7 @@ import {
   simulateDay,
   tileKey,
 } from '../src/game/core.mjs';
+import { poodleSvg } from '../src/game/poodle-art.mjs';
 
 test('Mimi completes food and quiet nap when bowl and bed are reachable', () => {
   const level = createStarterLevel();
@@ -98,4 +99,14 @@ test('care actions expose animation and poodle sound cues for the UI', () => {
     animation: 'is-resting',
     sound: 'sleepy-sigh',
   });
+});
+
+test('Cloudy art exposes detailed animated SVG layers', () => {
+  const svg = poodleSvg('cloudy');
+
+  assert.match(svg, /class="fur-curl/);
+  assert.match(svg, /class="tail"/);
+  assert.match(svg, /class="eyes"/);
+  assert.match(svg, /class="bow"/);
+  assert.match(svg, /Detailed animated poodle Cloudy/);
 });
